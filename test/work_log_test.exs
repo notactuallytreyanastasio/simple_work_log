@@ -27,7 +27,7 @@ defmodule WorkLogTest do
 
   test "it can get HTML files for a month and year" do
     res = WorkLog.html_for_month_and_year(@year, @month)
-    expected = ["<h1>\nA starting point</h1>\n<h2>\nLets see how this works</h2>\n<p>\nIt is where I would normally keep some notes</p>\n"]
+    expected = ["<h1>\nA starting point</h1>\n<h2>\nLets see how this works</h2>\n<p>\nIt is where I would normally keep some notes</p>\n<hr><hr><hr>"]
     assert res == expected
   end
 
@@ -52,7 +52,7 @@ defmodule WorkLogTest do
       _twenty_twenty_five,
       _twenty_twenty_six,
     ] = WorkLog.generate_years_posts(2022)
-    expected_html = "<h1>\nA starting point</h1>\n<h2>\nLets see how this works</h2>\n<p>\nIt is where I would normally keep some notes</p>\n"
-    assert feb_2_html == expected_html
+    expected = "<h1>\nA starting point</h1>\n<h2>\nLets see how this works</h2>\n<p>\nIt is where I would normally keep some notes</p>\n<hr><hr><hr>"
+    assert feb_2_html == expected
   end
 end

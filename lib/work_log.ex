@@ -14,6 +14,40 @@ defmodule WorkLog do
     2025,
     2026
   ]
+  @header """
+  <html>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <body>
+  """
+
+  def write_index do
+    content = make_all_posts_single_file |> Enum.join("\n<!-- this breaks between a year seemingly -->") |> Kernel.<> "</body></html>"
+    final = @header <> content
+    File.write("priv/index.html", final)
+  end
+
+  def make_all_posts_single_file do
+    @valid_years
+    |> generate_years_posts
+    |> Enum.map(fn all_years_posts ->
+      case all_years_posts do
+        [] ->
+          ""
+
+        year_of_posts ->
+          res =
+            year_of_posts
+            |> Enum.map(fn month_of_posts ->
+              case month_of_posts do
+                [] -> "\n<!--this day did not have a post -->"
+                posts -> posts |> Enum.join("\n<!-- end of post -->")
+              end
+            end)
+            |> List.flatten()
+            |> Enum.join("\n")
+      end
+    end)
+  end
 
   def valid_months, do: @valid_months
   def valid_years, do: @valid_years
@@ -49,6 +83,7 @@ defmodule WorkLog do
         result
         |> Enum.map(&File.read!/1)
         |> Enum.map(&Earmark.as_html!/1)
+        |> Enum.map(fn html -> html <> "<hr><hr><hr>" end)
     end
   end
 
