@@ -26,3 +26,5 @@ work_log-*.tar
 /tmp/
 
 *.sw*
+
+priv/my_years
